@@ -25,8 +25,10 @@ class trail_1_network(nn.Module):
             self.net.append(nn.ReLU())
             self.net.append(nn.BatchNorm2d(2*in_channels))
             in_channels = in_channels * 2
-
-        in_full = in_channels * 64**2*2/(2**n_conv)
+        if n_conv > 0:
+            in_full = in_channels * 64**2*2/(2**n_conv)
+        else:
+            in_full = 64**2 * 2
         step = round((in_full - 128)/n_fully)
         for n in range(n_fully-1):
             self.net.append(nn.Linear(int(in_full),int(in_full - step)))
