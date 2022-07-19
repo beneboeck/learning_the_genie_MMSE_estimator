@@ -27,9 +27,9 @@ class trail_1_network(nn.Module):
             in_channels = in_channels * 2
 
         in_full = in_channels * 64**2*2/(2**n_conv)
-        step = round(in_full - 128)/n_fully
+        step = round((in_full - 128)/n_fully)
         for n in range(n_fully-1):
-            self.net.append(nn.Linear(in_full,in_full - step))
+            self.net.append(nn.Linear(int(in_full),int(in_full - step)))
             self.net.append(nn.ReLU())
             in_full = in_full - step
         self.net.append(nn.Linear(in_full,128))
