@@ -36,18 +36,25 @@ class SCMMulti:
         h = np.zeros([n_batches, n_coherence, n_antennas_BS*n_antennas_MS], dtype=np.complex64)
         t_BS = np.zeros([n_batches, n_antennas_BS], dtype=np.complex64)
         t_MS = np.zeros([n_batches, n_antennas_MS], dtype=np.complex64)
+        gains_list = np.zeros([n_batches,self.n_path])
+        angles_list = np.zeros([n_batches,self.n_path])
 
         #angles = np.linspace(-90,90,n_batches)
         for i in range(n_batches):
+            if i % 1000 == 0:
+                print(f'{i/n_batches * 100}% done')
             gains = rng.rand(self.n_path)
             gains = gains / np.sum(gains, axis=0)
             angles_BS = (rng.rand(self.n_path) - 0.5) * 180
             angles_MS = (rng.rand(self.n_path) - 0.5) * 180
 
+            gains_list[i,:] = gains
+            angles_list[i,:] = angles_BS
+
             h[i, :, :], t_BS[i, :], t_MS[i,:] = scm_helper.chan_from_spectrum(n_coherence, n_antennas_BS, n_antennas_MS,
                                           angles_BS, angles_MS, gains, self.path_sigma_BS, self.path_sigma_MS, rng=rng)
 
-        return h, t_BS, t_MS
+        return h, t_BS, t_MS, gains_list,angles_list
 
     def get_config(self):
         config = {
