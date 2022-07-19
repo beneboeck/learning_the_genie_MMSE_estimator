@@ -35,6 +35,9 @@ C_sim_train = np.load(path + 'C_BS_train.npy')
 C_sim_test = np.load(path + 'C_BS_test.npy')
 C_sim_val = np.load(path + 'C_BS_val.npy')
 
+dataset_trail1_train = ds.dataset_trail1(h_train,C_sim_train)
+
+
 print(h_train.shape)
 lr,n_layers,n_conv,n_fully,kernel_size = nas.trail_1_NAS()
 
