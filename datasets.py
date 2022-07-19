@@ -9,8 +9,14 @@ from utils import *
 import scipy
 import torch
 import torch.nn as nn
+from torch.utils.data import Dataset, DataLoader
 import math
 from torch.utils.data import DataLoader, Dataset
 import matplotlib.pyplot as plt
 import network_architecture_search as nas
 import networks as n
+
+class dataset_trail1(Dataset):
+    def __init__(self,h,C_sim):
+        super().__init__()
+
