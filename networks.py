@@ -32,6 +32,7 @@ class trail_1_network(nn.Module):
             self.net.append(nn.Linear(int(in_full),int(in_full - step)))
             self.net.append(nn.ReLU())
             in_full = round(in_full - step)
+            print(in_full)
         self.net.append(nn.Linear(int(in_full),128))
         self.net.append(nn.Tanh())
         self.net = nn.Sequential(*self.net)
