@@ -13,6 +13,7 @@ import math
 from torch.utils.data import DataLoader, Dataset
 import matplotlib.pyplot as plt
 import network_architecture_search as nas
+import networks as n
 
 path = '/home/ga42kab/lrz-nashome/learning_the_genie_MMSE_estimator/data/'
 
@@ -35,6 +36,8 @@ C_sim_val = np.load(path + 'C_BS_val.npy')
 
 
 lr,n_layers,n_conv,n_fully,kernel_size = nas.trail_1_NAS()
+
+my_network = n.trail_1_network(n_conv,n_fully,kernel_size)
 
 print(lr)
 print(n_layers)
