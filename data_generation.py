@@ -24,13 +24,21 @@ def compute_sim_cov(t_BS,n_antennas):
     return np.array(C_sim)
 
 n_coherence = 10
-N_train = 3200
-N_val = 400
-N_test = 400
+N_train = 32000
+N_val = 4000
+N_test = 4000
 n_paths = 3
 n_antennas = 64
 
 path = '/home/ga42kab/lrz-nashome/learning_the_genie_MMSE_estimator/data/'
+log_file = open(path + 'log_file_data_description.txt','w')
+log_file.write(f'n_coherence: {n_coherence}\n')
+log_file.write(f'N_train: {N_train}\n')
+log_file.write(f'N_val: {N_val}\n')
+log_file.write(f'N_test: {N_test}\n')
+log_file.write(f'n_paths: {n_paths}\n')
+log_file.write(f'n_antennas: {n_antennas}\n')
+log_file.close()
 
 channel_generator = cg.SCMMulti(n_path = n_paths)
 
