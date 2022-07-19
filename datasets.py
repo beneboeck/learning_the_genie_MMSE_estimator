@@ -20,3 +20,8 @@ class dataset_trail1(Dataset):
     def __init__(self,h,C_sim):
         super().__init__()
 
+
+
+    def __len__(self):
+
+    def __getitem__(self,idx):

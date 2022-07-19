@@ -35,7 +35,7 @@ C_sim_train = np.load(path + 'C_BS_train.npy')
 C_sim_test = np.load(path + 'C_BS_test.npy')
 C_sim_val = np.load(path + 'C_BS_val.npy')
 
-
+print(h_train.shape)
 lr,n_layers,n_conv,n_fully,kernel_size = nas.trail_1_NAS()
 
 my_network = n.trail_1_network(n_conv,n_fully,kernel_size)
