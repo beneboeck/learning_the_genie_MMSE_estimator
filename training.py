@@ -31,7 +31,7 @@ def train_trial1(epochs,dataloader,dataset,model,device,optim,log_file):
             optim.zero_grad()
             loss.backward()
             optim.step()
-        if step % 10 == 0:
+        if step % 5 == 0:
             with torch.no_grad():
                 model.eval()
                 C_learned = model(dataset.C_hat[:1000,:,:,:].to(device))
@@ -39,8 +39,8 @@ def train_trial1(epochs,dataloader,dataset,model,device,optim,log_file):
                 print(dataset.C_sim[0, :3, :3].to(device))
                 loss = (torch.abs((C_learned - dataset.C_sim[:1000,:,:].to(device))) ** 2).sum(dim=(1, 2)).mean()
                 risk.append(np.array(loss.to('cpu')))
-                print(f'total mean loss {(torch.abs((C_learned - dataset.C_sim[:1000,:,:].to(device))) ** 2).mean():.2f}, step {step}, total loss {loss:.2f}')
-                log_file.write(f'total mean loss {(torch.abs((C_learned - dataset.C_sim[:1000,:,:].to(device))) ** 2).mean():.2f}, step {step}, total loss {loss:.2f}\n')
+                print(f'total mean loss {(torch.abs((C_learned - dataset.C_sim[:1000,:,:].to(device))) ** 2).mean():.4f}, step {step}, total loss {loss:.4f}')
+                log_file.write(f'total mean loss {(torch.abs((C_learned - dataset.C_sim[:1000,:,:].to(device))) ** 2).mean():.4f}, step {step}, total loss {loss:.4f}\n')
                 model.train()
 
     return model,np.array(risk),log_file
@@ -50,4 +50,6 @@ def eval_trial(dataset,model,device,key_file):
         model.eval()
         C_learned = model(dataset.C_hat.to(device))
         loss = (torch.abs((C_learned - dataset.C_sim.to(device))) ** 2).sum(dim=(1, 2)).mean()
+        mean_loss = (torch.abs((C_learned - dataset.C_sim.to(device))) ** 2).mean()
         key_file.write(f'loss for evaluation set: {loss}\n')
+        key_file.write(f'squared error for evaluation set (elementwise): {mean_loss}\n')
