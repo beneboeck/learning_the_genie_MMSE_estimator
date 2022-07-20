@@ -37,7 +37,7 @@ C_sim_train = np.load(path + 'C_BS_train.npy')
 C_sim_test = np.load(path + 'C_BS_test.npy')
 C_sim_val = np.load(path + 'C_BS_val.npy')
 
-device = torch.device('cuda:2' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 now = datetime.datetime.now()
 date = str(now)[:10]
 time = str(now)[11:16]
@@ -56,8 +56,8 @@ dataset_trial1_test = ds.dataset_trial1(h_test,C_sim_test)
 dataloader_trial1_train = DataLoader(dataset_trial1_train,batch_size=64,shuffle=True)
 lr,n_layers,n_conv,n_fully,kernel_size,dropout_bool,drop_prob = nas.trail_1_NAS()
 
-epochs = 170
-trial = 3
+epochs = 3000
+trial = 1
 n_coherence = 10
 n_antennas = 64
 
