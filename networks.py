@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import network_architecture_search as nas
 
 
-class trail_1_network(nn.Module):
+class trial_1_network(nn.Module):
     def __init__(self,n_antennas,n_conv,n_fully,kernel_size,device):
         super().__init__()
         self.net = []
