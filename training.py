@@ -15,7 +15,8 @@ import matplotlib.pyplot as plt
 import time
 
 def loss_likelihood(C_hat,C_learned,n_coherence):
-    La,U = torch.linalg.eig(C_learned)
+    _,U = torch.linalg.eig(C_learned)
+    La = torch.linalg.eigvalsh(C_learned)
     if torch.max(torch.abs(torch.imag(La))) > 1e-4:
         print('eigenvalues are complex!')
         print(torch.max(torch.abs(torch.imag(La))))
