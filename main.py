@@ -40,14 +40,14 @@ dataset_trial1_val = ds.dataset_trial1(h_val,C_sim_val)
 dataset_trial1_test = ds.dataset_trial1(h_test,C_sim_test)
 
 dataloader_trial1_train = DataLoader(dataset_trial1_train,batch_size=64,shuffle=True)
-
+device = 'cuda:0'
 
 print(h_train.shape)
 lr,n_layers,n_conv,n_fully,kernel_size = nas.trail_1_NAS()
 
-my_network = n.trail_1_network(n_conv,n_fully,kernel_size)
+my_network = n.trail_1_network(64,n_conv,n_fully,kernel_size,device)
 a = next(dataloader_trial1_train)
-b = a.iter()
+b = a.iter().to(device)
 output = my_network(b)
 print(output[0,:5,:5])
 
