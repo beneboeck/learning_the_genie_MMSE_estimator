@@ -40,8 +40,8 @@ def train_trial1(epochs,dataloader,dataset,model,device,optim,log_file):
                 loss = (torch.abs((C_learned - dataset.C_sim[:1000,:,:].to(device))) ** 2).sum(dim=(1, 2)).mean()
                 risk[r] = np.array(loss.to('cpu'))
                 r = r+1
-                print(f'total mean loss {(torch.abs((C_learned - dataset.C_sim[1000,:,:].to(device))) ** 2).mean():.2f}, step {step}, total loss {loss:.2f}')
-                log_file.write(f'total mean loss {(torch.abs((C_learned - dataset.C_sim.to(device))) ** 2).mean():.2f}, step {step}, total loss {loss:.2f}\n')
+                print(f'total mean loss {(torch.abs((C_learned - dataset.C_sim[:1000,:,:].to(device))) ** 2).mean():.2f}, step {step}, total loss {loss:.2f}')
+                log_file.write(f'total mean loss {(torch.abs((C_learned - dataset.C_sim[:1000,:,:].to(device))) ** 2).mean():.2f}, step {step}, total loss {loss:.2f}\n')
                 model.train()
 
     return model,risk,log_file
