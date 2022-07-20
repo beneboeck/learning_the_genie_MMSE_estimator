@@ -22,12 +22,14 @@ def loss_likelihood(C_hat,C_learned,n_coherence,device):
     log_det_C_learned = torch.log(torch.diagonal(R,dim1=1,dim2=2))
     C_hat = torch.complex(C_hat[:,0,:,:],C_hat[:,1,:,:])
     print('test')
+    print((C_learned @ C_learned_inv)[0,:,:])
     print(C_hat.size())
     print(C_learned_inv.size())
+    print(log_det_C_learned.size())
     loss = - (-n_coherence * log_det_C_learned - (n_coherence-1) * torch.einsum('jii->j',C_hat @ C_learned_inv)).mean()
     return loss
 
-def train(epochs,trial,n_coherence,dataloader,dataset,model,device,optim,log_file):
+def train(epochs,trial,n_coherence,dataloader,dataset,dataset_val,model,device,optim,log_file):
     risk = []
     for step in range(epochs):
         print(f'new step {step}')
@@ -65,6 +67,8 @@ def train(epochs,trial,n_coherence,dataloader,dataset,model,device,optim,log_fil
                     log_file.write(str(torch.min(La[La < 0])))
 
                 # early stopping criterion
+
+
 
 
                 model.train()
