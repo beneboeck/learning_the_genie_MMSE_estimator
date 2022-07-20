@@ -31,7 +31,6 @@ def train_trial1(epochs,dataloader,dataset,model,device,optim,log_file):
             optim.zero_grad()
             loss.backward()
             optim.step()
-    print('')
         if step % 30 == 0:
             with torch.no_grad():
                 model.eval()
