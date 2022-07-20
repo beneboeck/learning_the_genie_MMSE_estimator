@@ -18,6 +18,7 @@ def train_trial1(epochs,dataloader,dataset,model,device,optim,log_file):
     risk = np.zeros(int(np.floor(epochs/30)))
     r=0
     for step in range(epochs):
+        print(f'new step {step}')
         if step == 0:
             start = time.time()
         if step == 1:
@@ -35,8 +36,8 @@ def train_trial1(epochs,dataloader,dataset,model,device,optim,log_file):
             with torch.no_grad():
                 model.eval()
                 C_learned = model(dataset.C_hat[:1000,:,:,:].to(device))
-                print(C_learned[0, :5, :5])
-                print(dataset.C_hat[0, :5, :5].to(device))
+                print(C_learned[0, :3, :3])
+                print(dataset.C_sim[0, :3, :3].to(device))
                 loss = (torch.abs((C_learned - dataset.C_sim[:1000,:,:].to(device))) ** 2).sum(dim=(1, 2)).mean()
                 risk[r] = np.array(loss.to('cpu'))
                 r = r+1
