@@ -68,6 +68,8 @@ key_file.write(f'kernel_size: {kernel_size}\n')
 network_params = np.array([lr,64,n_conv,n_fully,kernel_size],dtype=np.float32)
 np.save(dir_path + '/network_params',network_params)
 
+print(lr,n_layers,n_conv,n_fully,kernel_size)
+
 network = n.trial_1_network(64,n_conv,n_fully,kernel_size,device).to(device)
 
 optim = torch.optim.Adam(lr=lr, params=network.parameters())

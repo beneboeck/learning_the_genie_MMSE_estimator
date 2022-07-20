@@ -19,6 +19,9 @@ def train_trial1(epochs,dataloader,dataset,model,device,optim,log_file):
     for step in range(epochs):
         for C_in, C in dataloader:
             C_in, C = C_in.to(device), C.to(device)
+            print('Hier')
+            print(C_in.size())
+            print(C.size())
             # angles = math.pi * my_net(h)
             C_learned = model(C_in)
             loss = (torch.abs((C_learned - C)) ** 2).sum(dim=(1, 2)).mean()
