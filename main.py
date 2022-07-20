@@ -56,7 +56,7 @@ dataset_trial1_test = ds.dataset_trial1(h_test,C_sim_test)
 dataloader_trial1_train = DataLoader(dataset_trial1_train,batch_size=64,shuffle=True)
 lr,n_layers,n_conv,n_fully,kernel_size = nas.trail_1_NAS()
 
-epochs = 60
+epochs = 2000
 
 key_file.write('Network Parameters\n')
 key_file.write(f'lr: {lr}\n')
