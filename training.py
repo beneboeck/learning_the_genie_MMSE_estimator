@@ -12,11 +12,17 @@ import torch.nn as nn
 import math
 from torch.utils.data import DataLoader, Dataset
 import matplotlib.pyplot as plt
+import time
 
 def train_trial1(epochs,dataloader,dataset,model,device,optim,log_file):
     risk = np.zeros(int(np.floor(epochs/30)))
     r=0
     for step in range(epochs):
+        if step == 0:
+            start = time.time()
+        if step == 1:
+            stop = time.time()
+            print(f'estimated time: {(start - stop)/3600 * epochs} h')
         for C_in, C in dataloader:
             C_in, C = C_in.to(device), C.to(device)
             # angles = math.pi * my_net(h)
@@ -25,7 +31,7 @@ def train_trial1(epochs,dataloader,dataset,model,device,optim,log_file):
             optim.zero_grad()
             loss.backward()
             optim.step()
-
+    print('')
         if step % 30 == 0:
             with torch.no_grad():
                 model.eval()
