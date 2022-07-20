@@ -19,9 +19,10 @@ def loss_likelihood(C_hat,C_learned,n_coherence,device):
     R_inv = torch.linalg.solve_triangular(R,torch.eye(64).to(device),upper=True)
     Q_inv = Q.mH
     C_learned_inv = R_inv @ Q_inv
-    log_det_C_learned = torch.log(torch.diagonal(R,dim1=1,dim2=2))
+    log_det_C_learned = torch.sum(torch.log(torch.abs(torch.diagonal(R,dim1=1,dim2=2))),dim=1)
     C_hat = torch.complex(C_hat[:,0,:,:],C_hat[:,1,:,:])
     print('test')
+    print(torch.diagonal(R,dim1=1,dim2=2).size())
     print((C_learned @ C_learned_inv)[0,:,:])
     print(C_hat.size())
     print(C_learned_inv.size())
