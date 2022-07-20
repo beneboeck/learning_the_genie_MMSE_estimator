@@ -75,7 +75,7 @@ network_params = np.array([lr,64,n_conv,n_fully,kernel_size,dropout_bool,drop_pr
 np.save(dir_path + '/network_params',network_params)
 
 print('NETWORK PARAMS')
-print(lr,n_layers,n_conv,n_fully,kernel_size)
+print(lr,n_layers,n_conv,n_fully,kernel_size,dropout_bool,drop_prob)
 
 network = n.trial_1_network(n_antennas,n_conv,n_fully,kernel_size,dropout_bool,drop_prob,device).to(device)
 log_file.write('NETWORK:\n')

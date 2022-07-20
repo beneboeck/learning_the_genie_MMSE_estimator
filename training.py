@@ -34,7 +34,7 @@ def loss_likelihood(C_hat,C_learned,n_coherence,device):
 
 def train(epochs,trial,n_coherence,dataloader,dataset,dataset_val,model,device,optim,log_file):
     risk = []
-    eval_risk_mod = torch.zeros(6)
+    eval_risk_mod = torch.zeros(6).to(device)
     eval_risk = []
     e = 0
     slope = -1.
