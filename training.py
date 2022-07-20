@@ -88,7 +88,7 @@ def train(epochs,trial,n_coherence,dataloader,dataset,dataset_val,model,device,o
                 eval_risk.append(loss.detach().to('cpu'))
                 print(f'evaluation loss after step {step}: {loss:.4f}')
                 log_file.write(f'evaluation loss after step {step}: {loss:.4f}\n')
-                if step > 20:
+                if step > 40:
                     beta = torch.linalg.inv(x.T @ x) @ x.T @ torch.tensor(eval_risk[-8:])[:,None]
                     slope = beta[0]
                     print('slope')
