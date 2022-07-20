@@ -26,7 +26,7 @@ class trial_1_network(nn.Module):
             self.net.append(nn.BatchNorm2d(int(2*in_channels)))
             in_channels = in_channels * 2
         if n_conv > 0:
-            in_full = in_channels * 64**2/(2**n_conv)
+            in_full = in_channels * 64**2/(4**n_conv)
             print('test')
             print(in_full)
         else:
