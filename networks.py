@@ -41,6 +41,7 @@ class trial_1_network(nn.Module):
         self.net.append(nn.Linear(int(in_full),128))
         self.net.append(nn.Tanh())
         self.net = nn.Sequential(*self.net)
+        print(self.net)
 
         self.n_antennas = n_antennas
         indices = torch.arange(n_antennas).to(device)
@@ -56,8 +57,6 @@ class trial_1_network(nn.Module):
     def compute_learned_cov(self,a_1, a_2):
         A_1 = torch.einsum('ijhl,ij->ihl',self.diags,a_1)
         A_2 = torch.einsum('ijhl,ij->ihl', self.diags, a_2)
-        print(A_1[0,:5,:5])
-        print(((self.X - self.Y) * A_1)[0,:5,:5])
         return torch.cos(-math.pi * (self.X - self.Y) * A_1) + 1j * torch.sin(-math.pi * (self.X - self.Y) * A_2)
 
     def forward(self,C):
