@@ -37,6 +37,7 @@ def train(epochs,trial,n_coherence,dataloader,dataset,dataset_val,model,device,o
     eval_risk_mod = torch.zeros(6)
     eval_risk = []
     e = 0
+    slope = -1.
     for step in range(epochs):
         print(f'new step {step}')
         if step == 0:
