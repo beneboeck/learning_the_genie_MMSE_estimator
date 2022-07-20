@@ -75,7 +75,7 @@ def eval_trial(dataset,trial,n_coherence,model,device,key_file):
         if trial == 1:
             loss = (torch.abs((C_learned - dataset.C_sim.to(device))) ** 2).sum(dim=(1, 2)).mean()
         if trial == 3:
-            loss = loss_likelihood(dataset.C_hat.to(device), C_learned, n_coherence)
+            loss = loss_likelihood(dataset.C_hat.to(device), C_learned, n_coherence,device)
         mean_loss = (torch.abs((C_learned - dataset.C_sim.to(device))) ** 2).mean()
         key_file.write(f'loss for evaluation set: {loss}\n')
         key_file.write(f'squared error for evaluation set (elementwise): {mean_loss}\n')
