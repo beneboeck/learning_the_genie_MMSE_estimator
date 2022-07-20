@@ -45,7 +45,7 @@ device = 'cuda:0'
 print(h_train.shape)
 lr,n_layers,n_conv,n_fully,kernel_size = nas.trail_1_NAS()
 
-my_network = n.trail_1_network(64,n_conv,n_fully,kernel_size,device)
+my_network = n.trail_1_network(64,n_conv,n_fully,kernel_size,device).to(device)
 a = iter(dataloader_trial1_train)
 b,c = a.next()
 b = b.to(device)
