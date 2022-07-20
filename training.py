@@ -34,9 +34,7 @@ def loss_likelihood(C_hat,C_learned,n_coherence,device):
 
 def train(epochs,trial,n_coherence,dataloader,dataset,dataset_val,model,device,optim,log_file):
     risk = []
-    eval_risk_mod = torch.zeros(6)
     eval_risk = []
-    e = 0
     slope = -1.
     for step in range(epochs):
         print(f'new step {step}')
@@ -84,12 +82,15 @@ def train(epochs,trial,n_coherence,dataloader,dataset,dataset_val,model,device,o
                     loss = (torch.abs((C_learned - dataset_val.C_sim.to(device))) ** 2).sum(dim=(1, 2)).mean()
                 if trial == 3:
                     loss = loss_likelihood(dataset_val.C_hat.to(device), C_learned, n_coherence, device)
-                x = torch.arange(6)
+                x_range = torch.arange(6)
+                x = torch.ones(6,2)
+                x[:,0] = x_range
                 eval_risk.append(loss.detach().to('cpu'))
                 print(f'evaluation loss after step {step}: {loss:.4f}')
                 log_file.write(f'evaluation loss after step {step}: {loss:.4f}\n')
                 if step > 20:
-                    slope = ((x * torch.tensor(eval_risk[-6:])).sum())/((x * x).sum())
+                    beta = torch.linalg.inv(x.T @ torch.tensor(eval_risk[-6:])) @ x.T @ torch.tensor(eval_risk[-6:])[:,None]
+                    slope = beta[0]
                     print('slope')
                     print(slope)
                 model.train()
