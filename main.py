@@ -35,13 +35,21 @@ C_sim_train = np.load(path + 'C_BS_train.npy')
 C_sim_test = np.load(path + 'C_BS_test.npy')
 C_sim_val = np.load(path + 'C_BS_val.npy')
 
-dataset_trail1_train = ds.dataset_trail1(h_train,C_sim_train)
+dataset_trial1_train = ds.dataset_trial1(h_train,C_sim_train)
+dataset_trial1_val = ds.dataset_trial1(h_val,C_sim_val)
+dataset_trial1_test = ds.dataset_trial1(h_test,C_sim_test)
+
+dataloader_trial1_train = DataLoader(dataset_trial1_train,batch_size=64,shuffle=True)
 
 
 print(h_train.shape)
 lr,n_layers,n_conv,n_fully,kernel_size = nas.trail_1_NAS()
 
 my_network = n.trail_1_network(n_conv,n_fully,kernel_size)
+a = next(dataloader_trial1_train)
+b = a.iter()
+output = my_network(b)
+print(output[0,:5,:5])
 
 print(lr)
 print(n_layers)

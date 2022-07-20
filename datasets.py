@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 import network_architecture_search as nas
 import networks as n
 
-class dataset_trail1(Dataset):
+class dataset_trial1(Dataset):
     def __init__(self,h,C_sim):
         super().__init__()
         h = torch.tensor(h)

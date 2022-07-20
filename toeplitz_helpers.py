@@ -3,6 +3,8 @@ from scipy.linalg import toeplitz, sqrtm
 from utils import crandn
 
 
+
+
 def crandn_toeplitz(t, rng=np.random.random.__self__):
     """
     Generate `x ~ N_C(0,T)` with Toeplitz cov. `T` that has `t` as its first row.
