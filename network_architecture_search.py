@@ -21,5 +21,7 @@ def trail_1_NAS():
     n_conv = np.random.choice([0,1,2])
     n_fully = n_layers - n_conv
     kernel_size = np.random.choice([5,7,9])
+    dropout_bool = np.random.choice([True,False])
+    drop_prob = 0.3 * np.random.rand(1) + 0.2
 
-    return lr,n_layers,n_conv,n_fully,kernel_size
+    return lr,n_layers,n_conv,n_fully,kernel_size,dropout_bool,drop_prob

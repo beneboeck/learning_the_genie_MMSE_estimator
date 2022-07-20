@@ -16,7 +16,7 @@ import network_architecture_search as nas
 
 
 class trial_1_network(nn.Module):
-    def __init__(self,n_antennas,n_conv,n_fully,kernel_size,device):
+    def __init__(self,n_antennas,n_conv,n_fully,kernel_size,dropout_bool,drop_prob,device):
         super().__init__()
         self.net = []
         in_channels = 2
@@ -33,6 +33,8 @@ class trial_1_network(nn.Module):
 
         step = round((in_full - 128)/n_fully)
         for n in range(n_fully-1):
+            if (n != 0) & (dropout_bool == True):
+                self.net.append(nn.Dropout(drop_prob))
             self.net.append(nn.Linear(int(in_full),int(in_full - step)))
             self.net.append(nn.ReLU())
             in_full = round(in_full - step)

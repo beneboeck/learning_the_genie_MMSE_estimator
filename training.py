@@ -21,6 +21,9 @@ def loss_likelihood(C_hat,C_learned,n_coherence,device):
     C_learned_inv = R_inv @ Q_inv
     log_det_C_learned = torch.log(torch.diagonal(R,dim1=1,dim2=2))
     C_hat = torch.complex(C_hat[:,0,:,:],C_hat[:,1,:,:])
+    print('test')
+    print(C_hat.size())
+    print(C_learned_inv.size())
     loss = - (-n_coherence * log_det_C_learned - (n_coherence-1) * torch.einsum('jii->j',C_hat @ C_learned_inv)).mean()
     return loss
 
