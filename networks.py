@@ -21,9 +21,9 @@ class trail_1_network(nn.Module):
         self.net = []
         in_channels = 2
         for c in range(n_conv):
-            self.net.append(nn.Conv2d(in_channels,2*in_channels,kernel_size,stride=2,padding=int(kernel_size-1)/2))
+            self.net.append(nn.Conv2d(int(in_channels),int(2*in_channels),kernel_size,stride=2,padding=int(kernel_size-1)/2))
             self.net.append(nn.ReLU())
-            self.net.append(nn.BatchNorm2d(2*in_channels))
+            self.net.append(nn.BatchNorm2d(int(2*in_channels)))
             in_channels = in_channels * 2
         if n_conv > 0:
             in_full = in_channels * 64**2/(2**n_conv)
