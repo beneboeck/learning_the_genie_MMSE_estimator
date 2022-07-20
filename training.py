@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import time
 
 def loss_likelihood(C_hat,C_learned,n_coherence):
-    La,U = torch.linalg.eigh(C_learned)
+    La,U = torch.linalg.eig(C_learned)
     if (La < 0).sum() != 0:
         print('some eigenvalues were negative!')
         print(torch.min(La[La<0]))
