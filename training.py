@@ -28,7 +28,7 @@ def loss_likelihood(C_hat,C_learned,n_coherence):
     print(C_hat.size())
     print(C_learned_inv.size())
     print( torch.einsum('jii->j',C_hat @ C_learned_inv).size())
-    loss = -n_coherence * log_det_C_learned - (n_coherence-1) * torch.einsum('jii->j',C_hat @ C_learned_inv)
+    loss = (-n_coherence * log_det_C_learned - (n_coherence-1) * torch.einsum('jii->j',C_hat @ C_learned_inv)).mean()
     print(loss.size())
     return loss
 
