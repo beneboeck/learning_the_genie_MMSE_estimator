@@ -64,6 +64,8 @@ def train(epochs,trial,n_coherence,dataloader,dataset,model,device,optim,log_fil
                     log_file.write('some eigenvalues were negative!')
                     log_file.write(str(torch.min(La[La < 0])))
 
+                # early stopping criterion
+
 
                 model.train()
 
