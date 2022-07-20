@@ -82,8 +82,10 @@ def train(epochs,trial,n_coherence,dataloader,dataset,dataset_val,model,device,o
                     loss = loss_likelihood(dataset_val.C_hat.to(device), C_learned, n_coherence, device)
                 x = torch.arange(6).to(device)
                 eval_risk[e%6] = loss
+                e = e+1
                 if e > 5:
                     slope = (x * loss).sum()/((x * x).sum())
+                    print('slope')
                     print(slope)
                 model.train()
 

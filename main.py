@@ -56,7 +56,7 @@ dataset_trial1_test = ds.dataset_trial1(h_test,C_sim_test)
 dataloader_trial1_train = DataLoader(dataset_trial1_train,batch_size=64,shuffle=True)
 lr,n_layers,n_conv,n_fully,kernel_size,dropout_bool,drop_prob = nas.trail_1_NAS()
 
-epochs = 40
+epochs = 46
 trial = 1
 n_coherence = 10
 n_antennas = 64
@@ -77,7 +77,7 @@ np.save(dir_path + '/network_params',network_params)
 print('NETWORK PARAMS')
 print(lr,n_layers,n_conv,n_fully,kernel_size)
 
-network = n.trial_1_network(64,n_conv,n_fully,kernel_size,dropout_bool,drop_prob,device).to(device)
+network = n.trial_1_network(n_antennas,n_conv,n_fully,kernel_size,dropout_bool,drop_prob,device).to(device)
 log_file.write('NETWORK:\n')
 log_file.write(str(network.net) + '\n')
 
