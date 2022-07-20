@@ -37,7 +37,7 @@ C_sim_train = np.load(path + 'C_BS_train.npy')
 C_sim_test = np.load(path + 'C_BS_test.npy')
 C_sim_val = np.load(path + 'C_BS_val.npy')
 
-device = torch.device('cuda:2' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda:3' if torch.cuda.is_available() else 'cpu')
 now = datetime.datetime.now()
 date = str(now)[:10]
 time = str(now)[11:16]
@@ -56,11 +56,15 @@ dataset_trial1_test = ds.dataset_trial1(h_test,C_sim_test)
 dataloader_trial1_train = DataLoader(dataset_trial1_train,batch_size=64,shuffle=True)
 lr,n_layers,n_conv,n_fully,kernel_size = nas.trail_1_NAS()
 
-epochs = 2000
+epochs = 20
+trial = 3
+n_coherence = 10
+n_antennas = 64
 
 key_file.write('Network Parameters\n')
+key_file.write(f'trial: {trial}\n')
 key_file.write(f'lr: {lr}\n')
-key_file.write(f'n_antennas: {64}\n')
+key_file.write(f'n_antennas: {n_antennas}\n')
 key_file.write(f'n_layers: {n_layers}\n')
 key_file.write(f'n_conv: {n_conv}\n')
 key_file.write(f'n_fully: {n_fully}\n')
@@ -76,8 +80,8 @@ log_file.write('NETWORK:\n')
 log_file.write(str(network.net) + '\n')
 
 optim = torch.optim.Adam(lr=lr, params=network.parameters())
-network,risk,log_file = tr.train_trial1(epochs,dataloader_trial1_train,dataset_trial1_train,network,device,optim,log_file)
+network,risk,log_file = tr.train(epochs,trial,n_coherence,dataloader_trial1_train,dataset_trial1_train,network,device,optim,log_file)
 save_risk(risk,dir_path)
 torch.save(network.state_dict(),dir_path + '/model_dict')
 
-tr.eval_trial(dataset_trial1_val,network,device,key_file)
+tr.eval_trial(dataset_trial1_val,trial,n_coherence,network,device,key_file)
