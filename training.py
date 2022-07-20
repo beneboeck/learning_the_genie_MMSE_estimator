@@ -59,7 +59,7 @@ def train(epochs,trial,n_coherence,dataloader,dataset,model,device,optim,log_fil
                     print('some eigenvalues were negative!')
                     print(torch.min(La[La < 0]))
                     log_file.write('some eigenvalues were negative!')
-                    log_file.write(torch.min(La[La < 0]))
+                    log_file.write(str(torch.min(La[La < 0])))
 
 
                 model.train()
