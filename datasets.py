@@ -33,4 +33,4 @@ class dataset_trial1(Dataset):
         return self.C_sim.size(0)
 
     def __getitem__(self,idx):
-        return self.C_hat[idx,:,:,:],self.C_sim[idx,:,:]
+        return self.C_hat[idx,:,:,:], self.C_sim[idx,:,:]

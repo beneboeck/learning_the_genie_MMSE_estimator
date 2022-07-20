@@ -49,6 +49,8 @@ my_network = n.trail_1_network(64,n_conv,n_fully,kernel_size,device)
 a = iter(dataloader_trial1_train)
 b,c = a.next()
 b = b.to(device)
+print(b.size())
+print(b[0,0,:5,:5])
 output = my_network(b)
 print(output[0,:5,:5])
 
