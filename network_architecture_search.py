@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 
 def trail_1_NAS():
     lr = torch.log(torch.tensor(1.5e-5)) + 0.8 * torch.randn(1)
-    lr = (torch.exp(lr) + 5e-6).float()
+    lr = (torch.exp(lr) + 5e-6).item()
     n_layers = np.random.choice([4,5])
     n_conv = np.random.choice([0,1,2])
     n_fully = n_layers - n_conv
