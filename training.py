@@ -73,8 +73,8 @@ def train(epochs,trial,n_coherence,dataloader,dataset,dataset_val,model,device,o
                 if (La < 0).sum() != 0:
                     print('some eigenvalues were negative!')
                     print(torch.min(La[La < 0]))
-                    log_file.write('some eigenvalues were negative!')
-                    log_file.write(str(torch.min(La[La < 0])))
+                    log_file.write('some eigenvalues were negative!\n')
+                    log_file.write(str(torch.min(La[La < 0])) + '\n')
 
                 # early stopping criterion
                 C_learned = model(dataset_val.C_hat.to(device))
@@ -93,6 +93,7 @@ def train(epochs,trial,n_coherence,dataloader,dataset,dataset_val,model,device,o
                     slope = beta[0]
                     print('slope')
                     print(slope)
+                    log_file.write(f'slope of evaluation loss: {slope}\n')
                 model.train()
 
         if slope > 0:

@@ -57,7 +57,7 @@ dataloader_trial1_train = DataLoader(dataset_trial1_train,batch_size=64,shuffle=
 lr,n_layers,n_conv,n_fully,kernel_size,dropout_bool,drop_prob = nas.trail_1_NAS()
 
 epochs = 170
-trial = 1
+trial = 3
 n_coherence = 10
 n_antennas = 64
 
