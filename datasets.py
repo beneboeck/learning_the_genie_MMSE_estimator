@@ -22,7 +22,10 @@ class dataset_trial1(Dataset):
         h = torch.tensor(h)
         C_sim = torch.tensor(C_sim)
         n_coherence = h.size(1)
-        self.C_hat = 1/(n_coherence - 1) * torch.einsum('ijh,ijk->ijhk',h,torch.conj(h)).sum(dim=1)
+        C_hat = 1/(n_coherence - 1) * torch.einsum('ijh,ijk->ijhk',h,torch.conj(h)).sum(dim=1)
+        self.C_hat = torch.zeros(C_hat.size(0),2,C_hat.size(1),C_hat.size(2))
+        self.C_hat[:,0,:,:] = torch.real(C_hat)
+        self.C_hat[:,1,:,:] = torch.imag(C_hat)
         self.C_sim = C_sim
 
 
@@ -30,4 +33,4 @@ class dataset_trial1(Dataset):
         return self.C_sim.size(0)
 
     def __getitem__(self,idx):
-        return self.C_hat[idx,:,:],self.C_sim[idx,:,:]
+        return self.C_hat[idx,:,:,:],self.C_sim[idx,:,:]
