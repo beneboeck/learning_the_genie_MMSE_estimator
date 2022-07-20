@@ -23,6 +23,7 @@ def loss_likelihood(C_hat,C_learned,n_coherence):
     La_inv = 1/La
     C_learned_inv = U @ torch.diag_embed(La_inv.cfloat()) @ U.mH
     log_det_C_learned = torch.log(torch.sum(La,dim=1))
+    C_hat = torch.complex(C_hat[:,0,:,:],C_hat[:,1,:,:])
     print(log_det_C_learned.size())
     print(C_hat.size())
     print(C_learned_inv.size())
