@@ -3,12 +3,12 @@ from functools import wraps
 import numpy as np
 import matplotlib.pyplot as plt
 
-def save_risk(risk_list,model_path):
+def save_risk(risk_list,model_path,title):
     risk = risk_list
     np.save(model_path + '/risk_numpy',risk)
     plt.plot(30 * np.arange(len(risk)), risk,linewidth=1)
-    plt.title('Risk')
-    plt.savefig(model_path + '/Risk',dpi = 300)
+    plt.title(title)
+    plt.savefig(model_path + '/' + title,dpi = 300)
     plt.close()
 
 

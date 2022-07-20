@@ -34,7 +34,8 @@ def loss_likelihood(C_hat,C_learned,n_coherence,device):
 
 def train(epochs,trial,n_coherence,dataloader,dataset,dataset_val,model,device,optim,log_file):
     risk = []
-    eval_risk = torch.zeros(6)
+    eval_risk_mod = torch.zeros(6)
+    eval_risk = []
     e = 0
     for step in range(epochs):
         print(f'new step {step}')
@@ -43,6 +44,7 @@ def train(epochs,trial,n_coherence,dataloader,dataset,dataset_val,model,device,o
         if step == 1:
             stop = time.time()
             print(f'estimated time: {(stop-start)/3600 * epochs} h')
+
         for C_in, C in dataloader:
             C_in, C = C_in.to(device), C.to(device)
             # angles = math.pi * my_net(h)
@@ -54,6 +56,7 @@ def train(epochs,trial,n_coherence,dataloader,dataset,dataset_val,model,device,o
             optim.zero_grad()
             loss.backward()
             optim.step()
+
         if step % 5 == 0:
             with torch.no_grad():
                 model.eval()
@@ -81,15 +84,22 @@ def train(epochs,trial,n_coherence,dataloader,dataset,dataset_val,model,device,o
                 else:
                     loss = loss_likelihood(dataset_val.C_hat.to(device), C_learned, n_coherence, device)
                 x = torch.arange(6).to(device)
-                eval_risk[e%6] = loss
+                eval_risk.append(loss)
+                eval_risk_mod[e%6] = loss
                 e = e+1
-                if e > 5:
+                if step > 100:
                     slope = (x * loss).sum()/((x * x).sum())
                     print('slope')
                     print(slope)
+                    log_file.write(f'evaluation loss after step {step}: {slope:.4f}\n')
                 model.train()
 
-    return model,np.array(risk),log_file
+        if slope > 0:
+            log_file.write('BREAKING CONDITION, slope negativ\n')
+            log_file.write(f'number epochs: {step}')
+            break
+
+    return model,np.array(risk),np.array(eval_risk),log_file
 
 
 

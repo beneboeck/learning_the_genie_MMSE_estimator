@@ -56,7 +56,7 @@ dataset_trial1_test = ds.dataset_trial1(h_test,C_sim_test)
 dataloader_trial1_train = DataLoader(dataset_trial1_train,batch_size=64,shuffle=True)
 lr,n_layers,n_conv,n_fully,kernel_size,dropout_bool,drop_prob = nas.trail_1_NAS()
 
-epochs = 46
+epochs = 170
 trial = 1
 n_coherence = 10
 n_antennas = 64
@@ -82,8 +82,9 @@ log_file.write('NETWORK:\n')
 log_file.write(str(network.net) + '\n')
 
 optim = torch.optim.Adam(lr=lr, params=network.parameters())
-network,risk,log_file = tr.train(epochs,trial,n_coherence,dataloader_trial1_train,dataset_trial1_train,dataset_trial1_val,network,device,optim,log_file)
-save_risk(risk,dir_path)
+network,risk,eval_risk,log_file = tr.train(epochs,trial,n_coherence,dataloader_trial1_train,dataset_trial1_train,dataset_trial1_val,network,device,optim,log_file)
+save_risk(risk,dir_path,'Risk')
+save_risk(eval_risk,dir_path,'Eval Risk')
 torch.save(network.state_dict(),dir_path + '/model_dict')
 
 tr.eval_trial(dataset_trial1_test,trial,n_coherence,network,device,key_file)
