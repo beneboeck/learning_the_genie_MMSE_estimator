@@ -37,7 +37,7 @@ C_sim_train = np.load(path + 'C_BS_train.npy')
 C_sim_test = np.load(path + 'C_BS_test.npy')
 C_sim_val = np.load(path + 'C_BS_val.npy')
 
-device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda:2' if torch.cuda.is_available() else 'cpu')
 now = datetime.datetime.now()
 date = str(now)[:10]
 time = str(now)[11:16]

@@ -14,7 +14,7 @@ from torch.utils.data import DataLoader, Dataset
 import matplotlib.pyplot as plt
 
 def train_trial1(epochs,dataloader,dataset,model,device,optim,log_file):
-    risk = np.zeros(np.floor(epochs/30))
+    risk = np.zeros(int(np.floor(epochs/30)))
     r=0
     for step in range(epochs):
         for C_in, C in dataloader:
