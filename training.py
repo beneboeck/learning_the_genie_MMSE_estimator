@@ -15,7 +15,11 @@ import matplotlib.pyplot as plt
 import time
 
 def loss_likelihood(C_hat,C_learned,n_coherence):
-    _,U = torch.linalg.eig(C_learned)
+    Q,R = torch.linalg.qr(c_learned)
+    R_inv = torch.linalg.solve_triangular(R,torch.eye(64),upper=True)
+    Q_inv = Q.mH
+    C_learned_inv = R_inv @ Q_inv
+    #_,U = torch.linalg.eig(C_learned)
     La = torch.linalg.eigvalsh(C_learned)
 #    if torch.max(torch.abs(torch.imag(La))) > 1e-4:
 #        print('eigenvalues are complex!')
@@ -26,9 +30,10 @@ def loss_likelihood(C_hat,C_learned,n_coherence):
         print('some eigenvalues were negative!')
         print(torch.min(La[La<0]))
         #La[La < 0] = 1e-5
-    La_inv = 1/La
-    C_learned_inv = U @ torch.diag_embed(La_inv.cfloat()) @ U.mH
-    log_det_C_learned = torch.log(torch.sum(La,dim=1))
+    #La_inv = 1/La
+    #C_learned_inv = U @ torch.diag_embed(La_inv.cfloat()) @ U.mH
+    #log_det_C_learned = torch.log(torch.sum(La,dim=1))
+    log_det_C_learned = torch.log(torch.diagonal(R,dim1=1,dim2=2))
     C_hat = torch.complex(C_hat[:,0,:,:],C_hat[:,1,:,:])
     print(log_det_C_learned.size())
     print(C_hat.size())
