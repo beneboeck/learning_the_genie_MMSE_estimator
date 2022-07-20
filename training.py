@@ -14,9 +14,9 @@ from torch.utils.data import DataLoader, Dataset
 import matplotlib.pyplot as plt
 import time
 
-def loss_likelihood(C_hat,C_learned,n_coherence):
+def loss_likelihood(C_hat,C_learned,n_coherence,device):
     Q,R = torch.linalg.qr(C_learned)
-    R_inv = torch.linalg.solve_triangular(R,torch.eye(64),upper=True)
+    R_inv = torch.linalg.solve_triangular(R,torch.eye(64).to(device),upper=True)
     Q_inv = Q.mH
     C_learned_inv = R_inv @ Q_inv
     #_,U = torch.linalg.eig(C_learned)
@@ -59,7 +59,7 @@ def train(epochs,trial,n_coherence,dataloader,dataset,model,device,optim,log_fil
             if trial == 1:
                 loss = (torch.abs((C_learned - C)) ** 2).sum(dim=(1, 2)).mean()
             if trial == 3:
-                loss = loss_likelihood(C_in,C_learned,n_coherence)
+                loss = loss_likelihood(C_in,C_learned,n_coherence,device)
             optim.zero_grad()
             loss.backward()
             optim.step()
