@@ -56,7 +56,7 @@ dataset_trial1_test = ds.dataset_trial1(h_test,C_sim_test)
 dataloader_trial1_train = DataLoader(dataset_trial1_train,batch_size=64,shuffle=True)
 lr,n_layers,n_conv,n_fully,kernel_size = nas.trail_1_NAS()
 
-epochs = 3
+epochs = 30
 
 key_file.write('Network Parameters\n')
 key_file.write(f'lr: {lr}\n')
@@ -68,10 +68,14 @@ key_file.write(f'kernel_size: {kernel_size}\n')
 network_params = np.array([lr,64,n_conv,n_fully,kernel_size],dtype=np.float32)
 np.save(dir_path + '/network_params',network_params)
 
+print('NETWORK PARAMS')
 print(lr,n_layers,n_conv,n_fully,kernel_size)
 
 network = n.trial_1_network(64,n_conv,n_fully,kernel_size,device).to(device)
-print(type(lr))
+log_file.write('NETWORK:\n')
+log_file.write(network.net)
+log_file.write('\n')
+
 optim = torch.optim.Adam(lr=lr, params=network.parameters())
 network,risk,log_file = tr.train_trial1(epochs,dataloader_trial1_train,dataset_trial1_train,network,device,optim,log_file)
 save_risk(risk,dir_path)
