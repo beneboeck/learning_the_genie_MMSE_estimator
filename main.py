@@ -70,7 +70,7 @@ np.save(dir_path + '/network_params',network_params)
 
 network = n.trial_1_network(64,n_conv,n_fully,kernel_size,device).to(device)
 
-optim = torch.optim.Adam(lr=torch.tensor(lr), params=network.parameters())
+optim = torch.optim.Adam(lr=lr, params=network.parameters())
 network,risk,log_file = tr.train_trial1(epochs,dataloader_trial1_train,dataset_trial1_train,network,device,optim,log_file)
 save_risk(risk,dir_path)
 torch.save(network.state_dict(),dir_path + '/model_dict')
