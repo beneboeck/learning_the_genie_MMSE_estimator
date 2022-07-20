@@ -71,7 +71,7 @@ np.save(dir_path + '/network_params',network_params)
 print(lr,n_layers,n_conv,n_fully,kernel_size)
 
 network = n.trial_1_network(64,n_conv,n_fully,kernel_size,device).to(device)
-
+print(type(lr))
 optim = torch.optim.Adam(lr=lr, params=network.parameters())
 network,risk,log_file = tr.train_trial1(epochs,dataloader_trial1_train,dataset_trial1_train,network,device,optim,log_file)
 save_risk(risk,dir_path)
