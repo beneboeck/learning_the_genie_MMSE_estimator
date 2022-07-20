@@ -15,8 +15,7 @@ import matplotlib.pyplot as plt
 import time
 
 def train_trial1(epochs,dataloader,dataset,model,device,optim,log_file):
-    risk = np.zeros(int(np.floor(epochs/30)))
-    r=0
+    risk = []
     for step in range(epochs):
         print(f'new step {step}')
         if step == 0:
@@ -39,13 +38,12 @@ def train_trial1(epochs,dataloader,dataset,model,device,optim,log_file):
                 print(C_learned[0, :3, :3])
                 print(dataset.C_sim[0, :3, :3].to(device))
                 loss = (torch.abs((C_learned - dataset.C_sim[:1000,:,:].to(device))) ** 2).sum(dim=(1, 2)).mean()
-                risk[r] = np.array(loss.to('cpu'))
-                r = r+1
+                risk.append(np.array(loss.to('cpu')))
                 print(f'total mean loss {(torch.abs((C_learned - dataset.C_sim[:1000,:,:].to(device))) ** 2).mean():.2f}, step {step}, total loss {loss:.2f}')
                 log_file.write(f'total mean loss {(torch.abs((C_learned - dataset.C_sim[:1000,:,:].to(device))) ** 2).mean():.2f}, step {step}, total loss {loss:.2f}\n')
                 model.train()
 
-    return model,risk,log_file
+    return model,np.array(risk),log_file
 
 def eval_trial(dataset,model,device,key_file):
     with torch.no_grad():
