@@ -82,8 +82,8 @@ log_file.write('NETWORK:\n')
 log_file.write(str(network.net) + '\n')
 
 optim = torch.optim.Adam(lr=lr, params=network.parameters())
-network,risk,log_file = tr.train(epochs,trial,n_coherence,dataloader_trial1_train,dataset_trial1_train,network,device,optim,log_file)
+network,risk,log_file = tr.train(epochs,trial,n_coherence,dataloader_trial1_train,dataset_trial1_train,dataset_trial1_val,network,device,optim,log_file)
 save_risk(risk,dir_path)
 torch.save(network.state_dict(),dir_path + '/model_dict')
 
-tr.eval_trial(dataset_trial1_val,trial,n_coherence,network,device,key_file)
+tr.eval_trial(dataset_trial1_test,trial,n_coherence,network,device,key_file)
