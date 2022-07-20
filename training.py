@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import time
 
 def loss_likelihood(C_hat,C_learned,n_coherence):
-    Q,R = torch.linalg.qr(c_learned)
+    Q,R = torch.linalg.qr(C_learned)
     R_inv = torch.linalg.solve_triangular(R,torch.eye(64),upper=True)
     Q_inv = Q.mH
     C_learned_inv = R_inv @ Q_inv
