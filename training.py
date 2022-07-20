@@ -32,7 +32,7 @@ def train_trial1(epochs,dataloader,dataset,model,device,optim,log_file):
             optim.zero_grad()
             loss.backward()
             optim.step()
-        if step % 30 == 0:
+        if step % 10 == 0:
             with torch.no_grad():
                 model.eval()
                 C_learned = model(dataset.C_hat[:1000,:,:,:].to(device))

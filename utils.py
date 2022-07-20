@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def save_risk(risk_list,model_path):
-    risk = np.array(risk_list.detach().to('cpu'))
+    risk = risk_list
     np.save(model_path + '/risk_numpy',risk)
     plt.plot(30 * np.arange(len(risk)), risk,linewidth=1)
     plt.title('Risk')
