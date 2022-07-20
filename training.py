@@ -34,6 +34,8 @@ def loss_likelihood(C_hat,C_learned,n_coherence,device):
 
 def train(epochs,trial,n_coherence,dataloader,dataset,dataset_val,model,device,optim,log_file):
     risk = []
+    eval_risk = torch.zeros(6)
+    e = 0
     for step in range(epochs):
         print(f'new step {step}')
         if step == 0:
@@ -58,7 +60,10 @@ def train(epochs,trial,n_coherence,dataloader,dataset,dataset_val,model,device,o
                 C_learned = model(dataset.C_hat[:1000,:,:,:].to(device))
                 print(C_learned[0, :3, :3])
                 print(dataset.C_sim[0, :3, :3].to(device))
-                loss = (torch.abs((C_learned - dataset.C_sim[:1000,:,:].to(device))) ** 2).sum(dim=(1, 2)).mean()
+                if trial == 1:
+                    loss = (torch.abs((C_learned - dataset.C_sim[:1000,:,:].to(device))) ** 2).sum(dim=(1, 2)).mean()
+                else:
+                    loss = loss_likelihood(dataset.C_hat[:1000,:,:,:].to(device), C_learned, n_coherence, device)
                 risk.append(np.array(loss.to('cpu')))
                 print(f'total mean squared error {(torch.abs((C_learned - dataset.C_sim[:1000,:,:].to(device))) ** 2).mean():.5f}, step {step}, actual loss {loss:.3f}')
                 log_file.write(f'total mean squared error {(torch.abs((C_learned - dataset.C_sim[:1000,:,:].to(device))) ** 2).mean():.5f}, step {step}, actual loss {loss:.3f}\n')
@@ -70,10 +75,16 @@ def train(epochs,trial,n_coherence,dataloader,dataset,dataset_val,model,device,o
                     log_file.write(str(torch.min(La[La < 0])))
 
                 # early stopping criterion
-
-
-
-
+                C_learned = model(dataset_val.C_hat.to(device))
+                if trial == 1:
+                    loss = (torch.abs((C_learned - dataset_val.C_sim.to(device))) ** 2).sum(dim=(1, 2)).mean()
+                else:
+                    loss = loss_likelihood(dataset_val.C_hat.to(device), C_learned, n_coherence, device)
+                x = torch.arange(6).to(device)
+                eval_risk[e%6] = loss
+                if e > 5:
+                    slope = (x * loss).sum()/((x * x).sum())
+                    print(slope)
                 model.train()
 
     return model,np.array(risk),log_file
