@@ -85,18 +85,19 @@ def train(epochs,trial,n_coherence,dataloader,dataset,dataset_val,model,device,o
                 if trial == 3:
                     loss = loss_likelihood(dataset_val.C_hat.to(device), C_learned, n_coherence, device)
                 x = torch.arange(6).to(device)
-                eval_risk.append(loss)
+                eval_risk.append(loss.detach().to('cpu'))
                 if e < 6:
                     eval_risk_mod[e] = loss
                 else:
                     eval_risk_mod = torch.roll(eval_risk_mod,-1)
                     eval_risk_mod[-1] = loss
                 e = e+1
+                print(f'evaluation loss after step {step}: {loss:.4f}')
+                log_file.write(f'evaluation loss after step {step}: {loss:.4f}\n')
                 if step > 40:
-                    slope = (x * loss).sum()/((x * x).sum())
+                    slope = (x * eval_risk_mod).sum()/((x * x).sum())
                     print('slope')
                     print(slope)
-                    log_file.write(f'evaluation loss after step {step}: {slope:.4f}\n')
                 model.train()
 
         if slope > 0:
