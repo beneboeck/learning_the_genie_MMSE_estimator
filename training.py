@@ -89,7 +89,7 @@ def train(epochs,trial,n_coherence,dataloader,dataset,dataset_val,model,device,o
                 print(f'evaluation loss after step {step}: {loss:.4f}')
                 log_file.write(f'evaluation loss after step {step}: {loss:.4f}\n')
                 if step > 20:
-                    beta = torch.linalg.inv(x.T @ torch.tensor(eval_risk[-6:])) @ x.T @ torch.tensor(eval_risk[-6:])[:,None]
+                    beta = torch.linalg.inv(x.T @ x) @ x.T @ torch.tensor(eval_risk[-6:])[:,None]
                     slope = beta[0]
                     print('slope')
                     print(slope)
