@@ -21,7 +21,7 @@ def loss_likelihood(C_hat,C_learned,n_coherence):
         print(La[La<0])
         La[La < 0] = 1e-5
     La_inv = 1/La
-    C_learned_inv = U @ torch.diag_embed(La_inv) @ U.mH
+    C_learned_inv = U @ torch.diag_embed(La_inv.cfloat()) @ U.mH
     log_det_C_learned = torch.log(torch.sum(La,dim=1))
     loss = -n_coherence * log_det_C_learned - (n_coherence-1) * torch.trace(C_hat @ C_learned_inv)
     return loss
