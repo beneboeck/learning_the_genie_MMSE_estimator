@@ -19,20 +19,6 @@ def loss_likelihood(C_hat,C_learned,n_coherence,device):
     R_inv = torch.linalg.solve_triangular(R,torch.eye(64).to(device),upper=True)
     Q_inv = Q.mH
     C_learned_inv = R_inv @ Q_inv
-    #_,U = torch.linalg.eig(C_learned)
-    La = torch.linalg.eigvalsh(C_learned)
-#    if torch.max(torch.abs(torch.imag(La))) > 1e-4:
-#        print('eigenvalues are complex!')
-#        print(torch.max(torch.abs(torch.imag(La))))
-#        print(torch.max(torch.abs(torch.imag(La))))
-    #La = torch.real(La)
-    if (La < 0).sum() != 0:
-        print('some eigenvalues were negative!')
-        print(torch.min(La[La<0]))
-        #La[La < 0] = 1e-5
-    #La_inv = 1/La
-    #C_learned_inv = U @ torch.diag_embed(La_inv.cfloat()) @ U.mH
-    #log_det_C_learned = torch.log(torch.sum(La,dim=1))
     log_det_C_learned = torch.log(torch.diagonal(R,dim1=1,dim2=2))
     C_hat = torch.complex(C_hat[:,0,:,:],C_hat[:,1,:,:])
     loss = - (-n_coherence * log_det_C_learned - (n_coherence-1) * torch.einsum('jii->j',C_hat @ C_learned_inv)).mean()
@@ -68,6 +54,14 @@ def train(epochs,trial,n_coherence,dataloader,dataset,model,device,optim,log_fil
                 risk.append(np.array(loss.to('cpu')))
                 print(f'total mean squared error {(torch.abs((C_learned - dataset.C_sim[:1000,:,:].to(device))) ** 2).mean():.5f}, step {step}, actual loss {loss:.3f}')
                 log_file.write(f'total mean squared error {(torch.abs((C_learned - dataset.C_sim[:1000,:,:].to(device))) ** 2).mean():.5f}, step {step}, actual loss {loss:.3f}\n')
+                La = torch.linalg.eigvalsh(C_learned)
+                if (La < 0).sum() != 0:
+                    print('some eigenvalues were negative!')
+                    print(torch.min(La[La < 0]))
+                    log_file.write('some eigenvalues were negative!')
+                    log_file.write(torch.min(La[La < 0]))
+
+
                 model.train()
 
     return model,np.array(risk),log_file
