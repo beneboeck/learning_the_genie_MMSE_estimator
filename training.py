@@ -18,12 +18,12 @@ def loss_likelihood(C_hat,C_learned,n_coherence):
     La,U = torch.linalg.eigh(C_learned)
     if (La < 0).sum() != 0:
         print('some eigenvalues were negative!')
-        print(La[La<0])
-        La[La < 0] = 1e-5
+        print(torch.min(La[La<0]))
+        #La[La < 0] = 1e-5
     La_inv = 1/La
     C_learned_inv = U @ torch.diag_embed(La_inv.cfloat()) @ U.mH
     log_det_C_learned = torch.log(torch.sum(La,dim=1))
-    loss = -n_coherence * log_det_C_learned - (n_coherence-1) * torch.trace(C_hat @ C_learned_inv)
+    loss = -n_coherence * log_det_C_learned - (n_coherence-1) * torch.einsum('jii->j',C_hat @ C_learned_inv)
     return loss
 
 def train(epochs,trial,n_coherence,dataloader,dataset,model,device,optim,log_file):
