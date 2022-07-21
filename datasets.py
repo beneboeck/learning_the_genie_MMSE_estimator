@@ -17,9 +17,12 @@ import network_architecture_search as nas
 import networks as n
 
 class dataset_trial1(Dataset):
-    def __init__(self,h,C_sim):
+    def __init__(self,h,C_sim,y):
         super().__init__()
         h = torch.tensor(h)
+        y = torch.tensor(y)
+        self.h = h
+        self.y = y
         C_sim = torch.tensor(C_sim)
         n_coherence = h.size(1)
         C_hat = 1/(n_coherence - 1) * torch.einsum('ijh,ijk->ijhk',h,torch.conj(h)).sum(dim=1)
@@ -33,4 +36,4 @@ class dataset_trial1(Dataset):
         return self.C_sim.size(0)
 
     def __getitem__(self,idx):
-        return self.C_hat[idx,:,:,:], self.C_sim[idx,:,:]
+        return self.C_hat[idx,:,:,:], self.C_sim[idx,:,:], self.h[idx,:,:], self.y[idx,:,:]

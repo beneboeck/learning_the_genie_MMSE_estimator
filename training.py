@@ -14,6 +14,16 @@ from torch.utils.data import DataLoader, Dataset
 import matplotlib.pyplot as plt
 import time
 
+def MMMSE_loss(h,C_learned,sig_n,y,device):
+    S = (sig_n * torch.eye(h.size(-1))[None,:,:]).to(device)
+    Q,R = torch.linalg.qr(C_learned + S)
+    R_inv = torch.linalg.solve_triangular(R,torch.eye(64).to(device),upper=True)
+    Q_inv = Q.mH
+    M_inv = R_inv @ Q_inv
+    H_hat = C_learned @ M_inv @ y
+    loss = (torch.abs((H_hat - h)) ** 2).sum(dim=(1, 2)).mean()
+    return loss
+
 def loss_likelihood(C_hat,C_learned,n_coherence,device):
     Q,R = torch.linalg.qr(C_learned)
     R_inv = torch.linalg.solve_triangular(R,torch.eye(64).to(device),upper=True)
@@ -32,7 +42,7 @@ def loss_likelihood(C_hat,C_learned,n_coherence,device):
     loss = - (-n_coherence * log_det_C_learned - (n_coherence-1) * torch.einsum('jii->j',C_hat @ C_learned_inv)).mean()
     return loss
 
-def train(epochs,trial,n_coherence,dataloader,dataset,dataset_val,model,device,optim,log_file):
+def train(epochs,trial,n_coherence,sig_n,dataloader,dataset,dataset_val,model,device,optim,log_file):
     risk = []
     eval_risk = []
     slope = -1.
@@ -44,14 +54,16 @@ def train(epochs,trial,n_coherence,dataloader,dataset,dataset_val,model,device,o
             stop = time.time()
             print(f'estimated time: {(stop-start)/3600 * epochs} h')
 
-        for C_in, C in dataloader:
-            C_in, C = C_in.to(device), C.to(device)
+        for C_in, C, h, y in dataloader:
+            C_in, C, h, y = C_in.to(device), C.to(device), h.to(device), y.to(device)
             # angles = math.pi * my_net(h)
             C_learned = model(C_in)
             if trial == 1:
                 loss = (torch.abs((C_learned - C)) ** 2).sum(dim=(1, 2)).mean()
             if trial == 3:
                 loss = loss_likelihood(C_in,C_learned,n_coherence,device)
+            if trial == 4:
+                loss = MMMSE_loss(h,C_learned,sig_n,y,device)
             optim.zero_grad()
             loss.backward()
             optim.step()

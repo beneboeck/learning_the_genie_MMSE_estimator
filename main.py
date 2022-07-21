@@ -60,6 +60,9 @@ epochs = 3000
 trial = 1
 n_coherence = 10
 n_antennas = 64
+SNR_db = 5
+SNR_eff = 10**(SNR_db/10)
+sig_n = math.sqrt(1/(n_antennas * SNR_eff))
 
 key_file.write('Network Parameters\n')
 key_file.write(f'trial: {trial}\n')
@@ -82,7 +85,7 @@ log_file.write('NETWORK:\n')
 log_file.write(str(network.net) + '\n')
 
 optim = torch.optim.Adam(lr=lr, params=network.parameters())
-network,risk,eval_risk,log_file = tr.train(epochs,trial,n_coherence,dataloader_trial1_train,dataset_trial1_train,dataset_trial1_val,network,device,optim,log_file)
+network,risk,eval_risk,log_file = tr.train(epochs,trial,n_coherence,sig_n,dataloader_trial1_train,dataset_trial1_train,dataset_trial1_val,network,device,optim,log_file)
 save_risk(risk,dir_path,'Risk')
 save_risk(eval_risk,dir_path,'Eval Risk')
 torch.save(network.state_dict(),dir_path + '/model_dict')
