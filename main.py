@@ -43,7 +43,7 @@ date = str(now)[:10]
 time = str(now)[11:16]
 time = time[:2] + '_' + time[3:]
 path = '/home/ga42kab/lrz-nashome/learning_the_genie_MMSE_estimator/models/models_trial1'
-dir_path = path + '/' + time
+dir_path = path + '/' + time + '_100000'
 os.mkdir (dir_path)
 
 log_file = open(dir_path + '/log_file_100000.txt','w')
