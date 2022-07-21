@@ -21,21 +21,21 @@ import datetime
 
 path = '/home/ga42kab/lrz-nashome/learning_the_genie_MMSE_estimator/data/'
 
-h_train = np.load(path + 'h_train.npy')
-h_test = np.load(path + 'h_test.npy')
-h_val = np.load(path + 'h_val.npy')
+h_train = np.load(path + 'h_train_100000.npy')
+h_test = np.load(path + 'h_test_10000.npy')
+h_val = np.load(path + 'h_val_10000.npy')
 
-angles_train = np.load(path + 'angles_train.npy')
-angles_test = np.load(path + 'angles_test.npy')
-angles_val = np.load(path + 'angles_val.npy')
+angles_train = np.load(path + 'angles_train_100000.npy')
+angles_test = np.load(path + 'angles_test_10000.npy')
+angles_val = np.load(path + 'angles_val_10000.npy')
 
-gains_train = np.load(path + 'gains_train.npy')
-gains_test = np.load(path + 'gains_test.npy')
-gains_val = np.load(path + 'gains_val.npy')
+gains_train = np.load(path + 'gains_train_100000.npy')
+gains_test = np.load(path + 'gains_test_10000.npy')
+gains_val = np.load(path + 'gains_val_10000.npy')
 
-C_sim_train = np.load(path + 'C_BS_train.npy')
-C_sim_test = np.load(path + 'C_BS_test.npy')
-C_sim_val = np.load(path + 'C_BS_val.npy')
+C_sim_train = np.load(path + 'C_BS_train_100000.npy')
+C_sim_test = np.load(path + 'C_BS_test_10000.npy')
+C_sim_val = np.load(path + 'C_BS_val_10000.npy')
 
 device = torch.device('cuda:3' if torch.cuda.is_available() else 'cpu')
 now = datetime.datetime.now()
@@ -46,8 +46,8 @@ path = '/home/ga42kab/lrz-nashome/learning_the_genie_MMSE_estimator/models/model
 dir_path = path + '/' + time
 os.mkdir (dir_path)
 
-log_file = open(dir_path + '/log_file.txt','w')
-key_file = open(dir_path + '/key_file.txt','w')
+log_file = open(dir_path + '/log_file_100000.txt','w')
+key_file = open(dir_path + '/key_file_100000.txt','w')
 
 dataset_trial1_train = ds.dataset_trial1(h_train,C_sim_train)
 dataset_trial1_val = ds.dataset_trial1(h_val,C_sim_val)
