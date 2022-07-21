@@ -21,6 +21,10 @@ import datetime
 
 path = '/home/ga42kab/lrz-nashome/learning_the_genie_MMSE_estimator/data/'
 
+y_train = np.load(path + 'y_train_100000.npy')
+y_test = np.load(path + 'y_test_10000.npy')
+y_val = np.load(path + 'y_val_10000.npy')
+
 h_train = np.load(path + 'h_train_100000.npy')
 h_test = np.load(path + 'h_test_10000.npy')
 h_val = np.load(path + 'h_val_10000.npy')
@@ -42,22 +46,22 @@ now = datetime.datetime.now()
 date = str(now)[:10]
 time = str(now)[11:16]
 time = time[:2] + '_' + time[3:]
-path = '/home/ga42kab/lrz-nashome/learning_the_genie_MMSE_estimator/models/models_trial1'
+path = '/home/ga42kab/lrz-nashome/learning_the_genie_MMSE_estimator/models/models_trial4'
 dir_path = path + '/' + time + '_100000'
 os.mkdir (dir_path)
 
 log_file = open(dir_path + '/log_file_100000.txt','w')
 key_file = open(dir_path + '/key_file_100000.txt','w')
 
-dataset_trial1_train = ds.dataset_trial1(h_train,C_sim_train)
-dataset_trial1_val = ds.dataset_trial1(h_val,C_sim_val)
-dataset_trial1_test = ds.dataset_trial1(h_test,C_sim_test)
+dataset_trial1_train = ds.dataset_trial1(h_train,C_sim_train,y_train)
+dataset_trial1_val = ds.dataset_trial1(h_val,C_sim_val,y_val)
+dataset_trial1_test = ds.dataset_trial1(h_test,C_sim_test,y_test)
 
 dataloader_trial1_train = DataLoader(dataset_trial1_train,batch_size=64,shuffle=True)
 lr,n_layers,n_conv,n_fully,kernel_size,dropout_bool,drop_prob = nas.trail_1_NAS()
 
-epochs = 3000
-trial = 1
+epochs = 30
+trial = 4
 n_coherence = 10
 n_antennas = 64
 SNR_db = 5
@@ -90,4 +94,4 @@ save_risk(risk,dir_path,'Risk')
 save_risk(eval_risk,dir_path,'Eval Risk')
 torch.save(network.state_dict(),dir_path + '/model_dict')
 
-tr.eval_trial(dataset_trial1_test,trial,n_coherence,network,device,key_file)
+tr.eval_trial(dataset_trial1_test,trial,n_coherence,sig_n,network,device,key_file)

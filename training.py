@@ -76,8 +76,10 @@ def train(epochs,trial,n_coherence,sig_n,dataloader,dataset,dataset_val,model,de
                 print(dataset.C_sim[0, :3, :3].to(device))
                 if trial == 1:
                     loss = (torch.abs((C_learned - dataset.C_sim[:1000,:,:].to(device))) ** 2).sum(dim=(1, 2)).mean()
-                else:
+                if trial == 3:
                     loss = loss_likelihood(dataset.C_hat[:1000,:,:,:].to(device), C_learned, n_coherence, device)
+                if trial == 4:
+                    loss = MMMSE_loss(dataset.h[:1000,:,:].to(device), C_learned, sig_n, dataset.y[:1000,:,:].to(device), device)
                 risk.append(np.array(loss.to('cpu')))
                 print(f'total mean squared error {(torch.abs((C_learned - dataset.C_sim[:1000,:,:].to(device))) ** 2).mean():.5f}, step {step}, actual loss {loss:.3f}')
                 log_file.write(f'total mean squared error {(torch.abs((C_learned - dataset.C_sim[:1000,:,:].to(device))) ** 2).mean():.5f}, step {step}, actual loss {loss:.3f}\n')
@@ -94,6 +96,8 @@ def train(epochs,trial,n_coherence,sig_n,dataloader,dataset,dataset_val,model,de
                     loss = (torch.abs((C_learned - dataset_val.C_sim.to(device))) ** 2).sum(dim=(1, 2)).mean()
                 if trial == 3:
                     loss = loss_likelihood(dataset_val.C_hat.to(device), C_learned, n_coherence, device)
+                if trial == 4:
+                    loss = MMMSE_loss(dataset_val.h.to(device), C_learned, sig_n,dataset_val.y.to(device), device)
                 x_range = torch.arange(8)
                 x = torch.ones(8,2)
                 x[:,0] = x_range
@@ -117,7 +121,7 @@ def train(epochs,trial,n_coherence,sig_n,dataloader,dataset,dataset_val,model,de
 
 
 
-def eval_trial(dataset,trial,n_coherence,model,device,key_file):
+def eval_trial(dataset,trial,n_coherence,sig_n,model,device,key_file):
     with torch.no_grad():
         model.eval()
         C_learned = model(dataset.C_hat.to(device))
@@ -125,6 +129,8 @@ def eval_trial(dataset,trial,n_coherence,model,device,key_file):
             loss = (torch.abs((C_learned - dataset.C_sim.to(device))) ** 2).sum(dim=(1, 2)).mean()
         if trial == 3:
             loss = loss_likelihood(dataset.C_hat.to(device), C_learned, n_coherence,device)
+        if trial == 4:
+            loss = MMMSE_loss(dataset.h.to(device), C_learned, sig_n, dataset.y.to(device), device)
         mean_loss = (torch.abs((C_learned - dataset.C_sim.to(device))) ** 2).mean()
         key_file.write(f'loss for evaluation set: {loss}\n')
         key_file.write(f'squared error for evaluation set (elementwise): {mean_loss}\n')
