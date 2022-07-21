@@ -24,9 +24,9 @@ def compute_sim_cov(t_BS,n_antennas):
     return np.array(C_sim)
 
 n_coherence = 10
-N_train = 32000
-N_val = 4000
-N_test = 4000
+N_train = 100000
+N_val = 10000
+N_test = 10000
 n_paths = 3
 n_antennas = 64
 
@@ -57,19 +57,19 @@ print(h_train.shape)
 print(gains_train.shape)
 
 
-np.save(path + 'h_train',h_train)
-np.save(path + 'h_test',h_test)
-np.save(path + 'h_val',h_val)
+np.save(path + 'h_train_100000',h_train)
+np.save(path + 'h_test_10000',h_test)
+np.save(path + 'h_val_10000',h_val)
 
 
-np.save(path + 'angles_train',angles_train)
-np.save(path + 'angles_test',angles_test)
-np.save(path + 'angles_val',angles_val)
+np.save(path + 'angles_train_100000',angles_train)
+np.save(path + 'angles_test_10000',angles_test)
+np.save(path + 'angles_val_10000',angles_val)
 
-np.save(path + 'gains_train',gains_train)
-np.save(path + 'gains_test',gains_test)
-np.save(path + 'gains_val',gains_val)
+np.save(path + 'gains_train_100000',gains_train)
+np.save(path + 'gains_test_10000',gains_test)
+np.save(path + 'gains_val_10000',gains_val)
 
-np.save(path + 'C_BS_train',C_sim_train)
-np.save(path + 'C_BS_test',C_sim_test)
-np.save(path + 'C_BS_val',C_sim_val)
+np.save(path + 'C_BS_train_100000',C_sim_train)
+np.save(path + 'C_BS_test_10000',C_sim_test)
+np.save(path + 'C_BS_val_10000',C_sim_val)
