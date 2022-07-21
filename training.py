@@ -21,7 +21,8 @@ def MMMSE_loss(h,C_learned,sig_n,y,device):
     Q_inv = Q.mH
     M_inv = R_inv @ Q_inv
     print(y.size())
-    H_hat = C_learned @ M_inv @ torch.transpose(y,dim0=1,dim1=2).cdouble()
+    print(type(y))
+    H_hat = C_learned @ M_inv @ torch.transpose(y,dim0=1,dim1=2).cfloat()
     print(H_hat.size())
     H_hat = torch.transpose(H_hat,dim0=1,dim1=2)
     loss = (torch.abs((H_hat - h)) ** 2).sum(dim=(1, 2)).mean()
