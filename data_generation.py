@@ -24,14 +24,14 @@ def compute_sim_cov(t_BS,n_antennas):
     return np.array(C_sim)
 
 n_coherence = 10
-N_train = 100000
-N_val = 10000
-N_test = 10000
+N_train = 200000
+N_val = 20000
+N_test = 20000
 n_paths = 3
 n_antennas = 64
 
 path = '/home/ga42kab/lrz-nashome/learning_the_genie_MMSE_estimator/data/'
-log_file = open(path + 'log_file_data_description.txt','w')
+log_file = open(path + 'log_file_data_description_200000.txt','w')
 log_file.write(f'n_coherence: {n_coherence}\n')
 log_file.write(f'N_train: {N_train}\n')
 log_file.write(f'N_val: {N_val}\n')
@@ -57,19 +57,19 @@ print(h_train.shape)
 print(gains_train.shape)
 
 
-np.save(path + 'h_train_100000',h_train)
-np.save(path + 'h_test_10000',h_test)
-np.save(path + 'h_val_10000',h_val)
+np.save(path + 'h_train_200000',h_train)
+np.save(path + 'h_test_20000',h_test)
+np.save(path + 'h_val_20000',h_val)
 
 
-np.save(path + 'angles_train_100000',angles_train)
-np.save(path + 'angles_test_10000',angles_test)
-np.save(path + 'angles_val_10000',angles_val)
+np.save(path + 'angles_train_200000',angles_train)
+np.save(path + 'angles_test_20000',angles_test)
+np.save(path + 'angles_val_20000',angles_val)
 
-np.save(path + 'gains_train_100000',gains_train)
-np.save(path + 'gains_test_10000',gains_test)
-np.save(path + 'gains_val_10000',gains_val)
+np.save(path + 'gains_train_200000',gains_train)
+np.save(path + 'gains_test_20000',gains_test)
+np.save(path + 'gains_val_20000',gains_val)
 
-np.save(path + 'C_BS_train_100000',C_sim_train)
-np.save(path + 'C_BS_test_10000',C_sim_test)
-np.save(path + 'C_BS_val_10000',C_sim_val)
+np.save(path + 'C_BS_train_200000',C_sim_train)
+np.save(path + 'C_BS_test_20000',C_sim_test)
+np.save(path + 'C_BS_val_20000',C_sim_val)
